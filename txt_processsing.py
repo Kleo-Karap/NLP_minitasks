@@ -1,13 +1,13 @@
+#Set the constants of the function
+  #1. The set of special characters I want to remove from my string
+  #2.The empty dictionary to which I will add the frequencies of the requested links
+  #3.The empty list, to which I will add the cleaned words containing only Greek characters
+  #4.The empty list, to which I will add the cleaned words that do not contain only Greek characters
+  #5.The auxiliary list, which will avoid duplicates in the non-greek list
+  #6.The list with the requested links as elements
+  #7.The Lowercase variable, with which I convert the string of the mandatory function definition to lowercase
+  #8. I create the list list, which has as its elements the characters of the lowercase string, separated by the space character
 def TxtProc(text):
-  #Ορίζω τις σταθερές της συνάρτησης
-  #1. Το σύνολο των ειδικών χαρακτήρων που θέλω να αφαιρεθούν από τη συμβολοσειρά μου
-  #2.Το κενό λεξικό στο οποίο θα προσθέσω τις συχνότητες των ζητούμενων συνδέσμων
-  #3.Την κενή λίστα, στην οποία θα προσθέσω τις καθαρισμένες λέξεις που περιέχουν μόνο ελληνικούς χαρακτήρες
-  #4.Την κενή λίστα, στην οποία θα προσθέσω τις καθαρισμένες λέξεις που δεν περιέχουν μόνο ελληνικούς χαρακτήρες
-  #5.Την βοηθητική λίστα, με την οποία θα αποφύγω τα διπλότυπα στη non-greek λίστα
-  #6.Την λίστα με τους ζητούμενους συνδέσμους ως στοιχεία
-  #7.Τη μεταβλητή Lowercase, με την οποία μετατρέπω τη συμβολοσειρά του υποχρεωτικού ορίσματος της συνάρτησης σε μικρογράμματη
-  #8. Δημιουργώ τη λίστα list, που έχει ως στοιχεια της τους χαρακτήρες της μικρογράμματης συμβολοσειράς lowercase, χωρισμένους με βάση τον κενό χαρακτήρα
   punctuation='''!"#$%&'()*+, -./:;<=>?@[\]^_`{|}~'''
   conj_word_freq={}
   greek_list=[]
@@ -17,20 +17,19 @@ def TxtProc(text):
   lowercase= text.lower()
   list=lowercase.split()
 
-  # για κάθε λέξη της λίστας από την αρχή ως το τέλος της,αφαίρεσε από τα άκρα της κάθε λέξης τους χαρακτήρες της μεταβλητής Punctuation, έτσι ώστε κάθε στοιχείο της λίστας να έχει καθαριστεί από πιθανά σημεία στίξης
+ # for each word in the list from the beginning to the end, remove from the ends of each word the characters of the Punctuation variable, so that each item in the list has been cleared of possible punctuation
   for i in range(0,len(list)):
     list[i]=list[i].strip(punctuation)
 
-  #Για κάθε λέξη στη λίστα με τις μικρογράμματες λέξεις ο μετρητής αρχικοποιείται με 0
-  #Για κάθε χαρακτήρα στη λέξη, αν ο χαρακτήρας αυτός δεν είναι ένας από τους πεζούς χαρακτήρες της ελληνικής,αύξανε τον μετρητή κατά 1.
-  #Αν μετά τη πρώτη δομή επανάληψης και τον έλεγχο ροής μέσα στη λέξη προκύψει λέξη που δεν έχει καθόλου μη-ελληνικούς χαρακτήρες, σημαίνει ότι είναι ελληνική , άρα πρόσθεσέ την στη λίστα greek_list.
-  #Αλλιώς, αν 1) περιέχει μη ελληνικούς χαρακτήρες και 2)δεν είναι μέσα στην προσωρινή λίστα temp,
-    #πρόσθεσέ της και στην προσωρινή και στην non-greek list.
+  #For each word in the list of microprinted words the counter is initialized with 0   #For each character in the word, if that character is not one of the lowercase Greek characters, increase the counter by 1.
+  #If after the first iteration structure and the flow check within the word, a word is found that has no non-Greek characters at all, it means that it is Greek , so add it to the greek_list.
+  #Otherwise, if 1) it contains non-Greek characters and 2)it is not in the temp list temp,
+    #add it to both the temp and non-greek list.
   for word in list:
-    count=0    #Για κάθε λέξη ο μετρητής αρχικοποιείται με 0
+    count=0    #For each word the counter is initialised wih 0
     for char in word:
       if char not in 'αβγδεζηιθικλμνξοπρσςτυφχψωάέήίόύώϊϋΐ':
-        count +=1   #αύξανε τον μετρητή κατά 1
+        count +=1   #add 1 to the counter
     if count==0:
       greek_list.append(word)
     else:
@@ -38,27 +37,25 @@ def TxtProc(text):
         non_greek_lst.append(word)
         temp.append(word)
 
-  # για κάθε σύνδεσμο της λίστας με τους συνδέσμους, γέμισε το άδειο λεξικό conj_word_freq με τον κάθε σύνδεσμο ως κλειδί και δωσε στο καθένα κλειδί ως τιμή τον αριθμό των εμφανίσεων του κάθε συνδέσμου στη λίστα των ελληνικών λέξεων
-  for conj in conjuction_list:
+  # for each link in the list of links, fill the empty dictionary conj_word_freq with each link as a key and give each key the number of occurrences of each link in the list of Greek words  for conj in conjuction_list:
     conj_word_freq[conj]=greek_list.count(conj)
-
-  #Αναθέτω στη μεταβλητή length το συνολικό πλήθος των λέξεων του καθαρισμένου ελληνικού κειμένου
-  #Αναθέτω στη μεταβλητή sum_conj_word_freq το άθροισμα των τιμών του λεξικού
-  #Υπολογίζω το ποσοστό εμφάνισης των συνδέσμων της λίστας στο καθαρισμλενο κείμενο εισόδου
-  #Στρογγυλοποιώ το εξαγόμενο ποσοστο κατα 2 δεκαδικά ψηφία
-  #Η συνάρτηση επιστρέφει μια λίστα με πρώτο στοιχείο το στρογγυλοποιημένο ποσοστό εμφάνισης των συνδέσμων στο
-    #ελληνικό κείμενο και δεύτερο τη λίστα των μη-ελληνικών λέξεων
+  #Set the variable length to the total number of words of the cleaned Greek text     
+  #Set the variable sum_conj_word_freq to the sum of the dictionary values
+  #Calculate the percentage of occurrence of the links in the list in the input cleaned text
+  #Round the resulting percentage by 2 decimal places
+  #The function returns a list with the rounded percentage of occurrence of links in the Greek text and the second is the list of non-Greek words
+  
   length=len(greek_list)
   sum_conj_word_freq=sum(conj_word_freq.values())
   conj_word_freq_percentage=(100* sum_conj_word_freq)/length
   round_conj_word_freq_percentage=round(conj_word_freq_percentage,2)
   return [round_conj_word_freq_percentage, non_greek_lst]
 
-#Ορίζω στις μεταβλητές sentence 1 και sentence 2 δύο κείμενα αντίστοιχα.
-#Καλώ τη συνάρτηση για κάθε κείμενο ξεχωριστά, αναθέτοντας την σε μια μεταβλητή l.
-#Τυπώνω το κείμενο της εκφώνησης και εφόσον η συνάρτηση επιστρέφει λίστα, μπορώ μέσω list indexing να έχω πρόσβαση στην ζητούμενη πληροφορία.
-sentence1='Οι ereνητές, με επικεφαλής την επίκουρη καθηγήτρια Emily Smith της Σχολής Δημόσιας Υγείας του Πανεπιστημίου George Washington, που έκαναν τη σχετική δημοσίευση στο βρετανικό ιατρικό περιοδικό "BMJ Global Health", ανέλυσαν στοιχεία από 12 μελέτες που αφορούσαν συνολικά 13.136 έγκυες σε 12 χώρες του κόσμου.'
+#I assign to the variables sentence 1 and sentence 2 two texts respectively.     
+#I call the function for each text separately, assigning it to a variable l.
+#Type the text of the utterance and since the function returns a list, I can use list indexing to access the requested information.
 
+sentence1='Οι ereνητές, με επικεφαλής την επίκουρη καθηγήτρια Emily Smith της Σχολής Δημόσιας Υγείας του Πανεπιστημίου George Washington, που έκαναν τη σχετική δημοσίευση στο βρετανικό ιατρικό περιοδικό "BMJ Global Health", ανέλυσαν στοιχεία από 12 μελέτες που αφορούσαν συνολικά 13.136 έγκυες σε 12 χώρες του κόσμου.'
 sentence2="Ο Lane δήλωσε επίσης πως οι κυβερνήσεις της ευρωζώνης, οι οποίες ξοδεύουν τώρα υπερβολικά πολλά σε επιδόματα, θα πρέπει να αναλάβουν ένα μεγαλύτερο ρόλο στην καταπολέμηση του πληθωρισμού. Ο πληθωρισμός θα μειωθεί γρήγορα φέτος, αλλά -το θέμα είναι πώς θα πας εγκαίρως από το 3,5% στο τέλος του 2023 στο στόχο του 2%-, δήλωσε ο Lane. (Εδώ θα είναι σημαντική η πολιτική των επιτοκίων, για να εξασφαλιστεί πώς θα διανυθεί το τελευταίο χιλιόμετρο της επιστροφής στο στόχο)."
 
 l=TxtProc(sentence1)
