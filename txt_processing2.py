@@ -10,8 +10,7 @@ TxtToProcess='Οι erevniτές erevniτές, με επικεφαλής την �
           'και 15 φορές πιθανότερο να έχουν ανάγκη διασωλήνωσης. Ακόμη έχουν 23 φορές μεγαλύτερη πιθανότητα να διαγνωσθούν με ' \
           'πνευμονία και είναι πέντε φορές πιθανότερο να εμφανίσουν σοβαρές θρομβώσεις στο αίμα.'
 
-#Κρατάω τον σκελετό της συνάρτησης TxtProc και δηλώνω τη μεταβλητη TxtToProcess ως global μέσα στη συνάρτηση, ώστε η συνάρτηση να έχει
-#πρόσβαση σε αυτήν.
+#Keep the format of the TxtProc function and declare the variable TxtToProcess as global inside the function, so that the function has access to it.
 def TxtProc2(detailedOutput = False):
   global TxtToProcess
   punctuation='''!"#$%&'()*+, -./:;<=>?@[\]^_`{|}~'''
@@ -39,8 +38,8 @@ def TxtProc2(detailedOutput = False):
         non_greek_lst.append(word)
         temp.append(word)
 
-  #Για κάθε σύνδεσμο στη λίστα των στοχευόμενων συνδέσμων, μέτρα πόσες φορές αυτός εμφανίζεται στη λίστα με τις καθαρισμένες ελληνικές λέξεις
-  #Αν ο σύνδεσμος δεν βρεθεί 0 φορές στη λίστα, πρόσθεσέ τον στο λεξικό conj_word_freq με key τον ίδιο τον σύνδεσμο και value την συχνότητα εμφάνισής του στη λίστα.
+  #For each link in the list of targeted links, count how many times it appears in the list of cleaned Greek words       
+  #If the link is not found 0 times in the list, add it to the conj_word_freq dictionary with key the link itself and value the frequency of its occurrence in the list.
   for conj in conjuction_list:
     appeared_conj=greek_list.count(conj)
     if appeared_conj !=0:
@@ -51,15 +50,15 @@ def TxtProc2(detailedOutput = False):
   conj_word_freq_percentage=(100* sum_conj_word_freq)/length
   round_conj_word_freq_percentage=round(conj_word_freq_percentage,2)
 
-#Αν η τιμή του ορίσματος της συνάρτησης είναι True
- #1. Χρησιμοποιώ τη συνάρτηση sorted, διατρέχω ταυτόχρονα κλειδιά και τιμές του λεξικού conj_word_freq με τη μέθοδο .items()
-  # Θέτω στο optional όρισμα key ως τιμή μια ανώνυμη συνάρτηση που επιστρέφει το στοιχείο του λεξικού με βάση το οποίο θα γίνει η ταξινόμηση. Η ανώνυμη συνάρτηση επστρέφει μέσω Indexing 
-  #τις τιμές του λεξικού.
-  #Θέτω το optional όρισμα Reverse=True για να πετύχω την ταξινόμηση των στοιχείων του λεξικού με βάση την φθίνουσα σειρά των τιμών του.
-  #Επειδή η μέθοδος sorted επιστρέφει λίστα των ταξινομημένων στοιχείων, με τη μέθοδο dict την μετατρέπω σε λίστα
-  #2. Η συνάρτηση θα επιστρέφει μια λίστα με στοιχεία της τις ζητούμενες πληροφορίες της εκφώνησης
-#Αν η τιμή του ορίσματος της συνάρτησης είναι False:
-  # η συνάρτηση επιστρέφει μια λίστα με τις ζητούμενες πληροφορές της εκφώνησης
+#If the value of the function's argument is True:        
+#1. Using the sorted function, I simultaneously sort keys and values of the conj_word_freq dictionary with the .items() method
+  # I set the optional key argument as the value of an anonymous function that returns the dictionary item by which to sort. The anonymous function is indexed by Indexing 
+  #the values of the dictionary.
+  #Set the optional argument Reverse=True to achieve the sorting of the dictionary items based on the descending order of their values.
+  #Because the sorted method returns a list of the sorted items, I use the dict method to convert it to a list
+#2. The function will return a list of elements with the requested information of the utterance
+#If the value of the function's argument is False:
+  # the function returns a list of the requested information of the utterance
   if detailedOutput == True:
     sorted_conjuctions_by_freq=sorted(conj_word_freq.items(),key=lambda v:v[1],reverse=True)
     conj_word_freq=dict(sorted_conjuctions_by_freq)
@@ -67,9 +66,10 @@ def TxtProc2(detailedOutput = False):
   else:
     return [round_conj_word_freq_percentage, non_greek_lst]
 
-#Καλώ τη συνάρτηση για κάθε Boolean τιμή του ορίσματος detailedOutput ξεχωριστά, αναθέτοντας την σε μια μεταβλητή l.
-#Τυπώνω το κείμενο καλώντας την global μεταβλητή TxtToProcess
-#Τυπώνω το κείμενο της κάθε εκφώνησης και εφόσον η συνάρτηση επιστρέφει λίστα, μπορώ μέσω list indexing να έχω πρόσβαση στην ζητούμενη πληροφορία.
+#Call the function for each Boolean value of the detailedOutput argument separately, assigning it to a variable l.        
+#Type the text by calling the global variable TxtToProcess
+#Type the text of each output and since the function returns a list, I can use list indexing to access the requested information.
+
 l=TxtProc2()
 print("Input text processed = ", TxtToProcess)
 print("Percentage of conjuctions-to-search in text entered after cleaning = ",l[0], "%")
